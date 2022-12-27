@@ -1,0 +1,45 @@
+{{- $fullName := include "canal-server.fullname" . -}}
+{{- $name := include "canal-server.name" . -}}
+kind: Service
+apiVersion: v1
+metadata:
+  name: {{ $fullName }}
+  labels:
+    app: {{ $name }}
+    release: {{ .Release.Name }}
+    heritage: {{ .Release.Service }}
+    chart: {{ include "canal.chart" . }}
+spec:
+  selector:
+    app: {{ $name }}
+  type: {{ .Values.canalServer.service.type }}
+  ports:
+  - name: admin-port
+    port: 11110
+    targetPort: admin-port
+  - name: canal-port
+    port: 11111
+    targetPort: canal-port
+  - name: metrics-port
+    port: 11112
+    targetPort: metrics-port
+---
+# Service Headless
+kind: Service
+apiVersion: v1
+metadata:
+  name: {{ $fullName }}-headless
+spec:
+  clusterIP: None
+  selector:
+    app: {{ $name }}
+  ports:
+  - name: admin-port
+    port: 11110
+    targetPort: admin-port
+  - name: canal-port
+    port: 11111
+    targetPort: canal-port
+  - name: metrics-port
+    port: 11112
+    targetPort: metrics-port

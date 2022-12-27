@@ -1,0 +1,21 @@
+server:
+  port: ${SERVER_PORT}
+spring:
+  jackson:
+    date-format: yyyy-MM-dd HH:mm:ss
+    time-zone: GMT+8
+
+spring.datasource:
+  address: ${SPRING_DATASOURCE_ADDRESS}
+  database: ${SPRING_DATASOURCE_DATABASE}
+  username: ${SPRING_DATASOURCE_USERNAME}
+  password: ${SPRING_DATASOURCE_PASSWORD}
+  driver-class-name: com.mysql.jdbc.Driver
+  url: jdbc:mysql://${spring.datasource.address}/${spring.datasource.database}?useUnicode=true&characterEncoding=UTF-8&useSSL=false
+  hikari:
+    maximum-pool-size: 30
+    minimum-idle: 1
+
+canal:
+  adminUser: ${CANAL_ADMINUSER}
+  adminPasswd: ${CANAL_ADMINPASSWD}

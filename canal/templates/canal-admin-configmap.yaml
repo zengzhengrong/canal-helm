@@ -1,0 +1,18 @@
+{{- if not .Values.canalAdmin.config.base.extralConfigMapRef }}
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ include "canal-admin.fullname" . }}
+  labels:
+    app: {{ include "canal-admin.name" . }}
+    release: {{ .Release.Name }}
+    heritage: {{ .Release.Service }}
+    chart: {{ include "canal.chart" . }}
+data:
+  canal.adminUser: {{ .Values.canalAdmin.config.base.canalAdminUser }}
+  canal.adminPasswd: {{ .Values.canalAdmin.config.base.canalAdminPasswd }}
+  server.port: {{ .Values.canalAdmin.config.base.serverPort | quote }}
+  spring.datasource.address: {{ .Values.canalAdmin.config.base.springDatasourceAddress }}
+  spring.datasource.username: {{ .Values.canalAdmin.config.base.springDatasourceUsername }}
+  spring.datasource.database: {{ .Values.canalAdmin.config.base.springDatasourceDatabase }}
+{{- end }}

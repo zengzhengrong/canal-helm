@@ -1,0 +1,6 @@
+dependencies:
+- name: zookeeper
+  repository: https://zengzhengrong.github.io/helm-charts
+  version: 3.7.1
+digest: sha256:ff9c6bc49cbd5addac83fec8574257889a0aae78e85386dfb9d8464cf7cc8058
+generated: "2022-12-22T22:29:37.0106476+08:00"

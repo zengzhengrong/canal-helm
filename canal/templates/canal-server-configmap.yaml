@@ -1,0 +1,19 @@
+{{- if not .Values.canalServer.config.extralConfigMapRef }}
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ include "canal-server.fullname" . }}
+  labels:
+    app: {{ include "canal-server.name" . }}
+    release: {{ .Release.Name }}
+    heritage: {{ .Release.Service }}
+    chart: {{ include "canal.chart" . }}
+data:
+  canal.register.ip: {{ .Values.canalServer.config.canalRegisterIp | default "" | quote }}
+  canal.admin.manager: {{ .Values.canalServer.config.canalAdminManager | quote }}
+  canal.admin.port: {{ .Values.canalServer.config.canalAdminPort | quote }}
+  canal.admin.user: {{ .Values.canalServer.config.canalAdminUser | quote }}
+  canal.admin.register.auto: {{ .Values.canalServer.config.canalAdminRegisterAuto | quote }}
+  canal.admin.register.cluster: {{ .Values.canalServer.config.canalAdminRegisterCluster | quote }}
+  canal.admin.register.name: {{ .Values.canalServer.config.canalAdminRegisterName | default "" | quote }}
+{{- end }}

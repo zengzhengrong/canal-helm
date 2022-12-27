@@ -1,0 +1,20 @@
+kind: Service
+apiVersion: v1
+metadata:
+  name: {{ include "canal-admin.fullname" . }}
+  labels:
+    app: {{ include "canal-admin.name" . }}
+    release: {{ .Release.Name }}
+    heritage: {{ .Release.Service }}
+    chart: {{ include "canal.chart" . }}
+spec:
+  selector:
+    app: {{ include "canal-admin.name" . }}
+  type: {{ .Values.canalAdmin.service.type | quote }}
+  ports:
+  - name: {{ include "canal-admin.fullname" . }}
+    port:  80
+    targetPort: {{ include "canal-admin.fullname" . }}
+    {{ if eq .Values.canalAdmin.service.type "NodePort" }}
+    nodePort: {{ .Values.canalAdmin.service.nodePort }}
+    {{ end }}

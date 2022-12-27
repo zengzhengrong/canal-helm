@@ -1,0 +1,109 @@
+{{- $fullName := include "canal-server.fullname" . -}}
+{{- $name := include "canal-server.name" . -}}
+{{- $adminService := include "canal-admin.fullname" . -}}
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: {{ $fullName }}
+spec:
+  selector:
+    matchLabels:
+      app: {{ $name }}
+  serviceName: {{ $name }}-headless
+  {{- if or .Values.zookeeper.enabled .Values.zookeeper.extralUrl }} 
+  replicas: {{ .Values.canalServer.replicaCount }}
+  {{- else }}
+  replicas: 1
+  {{- end }}
+  template:
+    metadata:
+      labels:
+        app: {{ $name }}
+    spec:
+      terminationGracePeriodSeconds: 10
+      initContainers:
+      - name: wait-canal-admin
+        image: zengzhengrong889/box:1.0
+        command: 
+          - sh
+          - -c
+          - until curl -s -o /dev/null {{ $adminService }}; do echo waiting for canal-admin; sleep 2; done; echo done
+      containers:
+      - name: {{ $name }}
+        image: {{ .Values.canalServer.image }}
+        imagePullPolicy: {{ .Values.canalServer.pullPolicy }}
+        resources:
+          {{- toYaml .Values.canalServer.resources | nindent 10 }}
+        env:
+          - name: POD_NAME
+            valueFrom:
+              fieldRef:
+                fieldPath: metadata.name
+          - name: POD_NAMESPACE
+            valueFrom:
+              fieldRef:
+                fieldPath: metadata.namespace
+          - name: CANAL_REGISTER_IP
+            value: "$(POD_NAME).{{ $fullName }}-headless.$(POD_NAMESPACE)"
+          - name: CANAL_ADMIN_MANAGER
+            valueFrom:
+              configMapKeyRef:
+                name: {{ .Values.canalServer.config.extralConfigMapRef | default "canal-server" }}
+                key: canal.admin.manager
+          - name: CANAL_ADMIN_PORT
+            valueFrom:
+              configMapKeyRef:
+                name: {{ .Values.canalServer.config.extralConfigMapRef | default "canal-server" }}
+                key: canal.admin.port
+          - name: CANAL_ADMIN_USER
+            valueFrom:
+              configMapKeyRef:
+                name: {{ .Values.canalServer.config.extralConfigMapRef | default "canal-server" }}
+                key: canal.admin.user
+          - name: CANAL_ADMIN_PASSWD
+            valueFrom:
+              secretKeyRef:
+                name: {{ .Values.canalServer.secret.extralPasswordSecretRef | default "canal-server" }}
+                key: canal.admin.passwd
+          - name: CANAL_ADMIN_REGISTER_AUTO
+            valueFrom:
+              configMapKeyRef:
+                name: {{ .Values.canalServer.config.extralConfigMapRef | default "canal-server" }}
+                key: canal.admin.register.auto
+          - name: CANAL_ADMIN_REGISTER_CLUSTER
+            valueFrom:
+              configMapKeyRef:
+                name: {{ .Values.canalServer.config.extralConfigMapRef | default "canal-server" }}
+                key: canal.admin.register.cluster
+          - name: CANAL_ADMIN_REGISTER_NAME
+            valueFrom:
+              configMapKeyRef:
+                name: {{ .Values.canalServer.config.extralConfigMapRef | default "canal-server" }}
+                key: canal.admin.register.name
+        ports:
+          - containerPort: 11110
+            name: admin-port
+          - containerPort: 11111
+            name: canal-port
+          - containerPort: 11112
+            name: metrics-port
+        volumeMounts:
+        - name: logs
+          mountPath: /canal-server/logs
+          subPath: logs
+  volumeClaimTemplates:
+  - metadata:
+      labels:
+        app: canal-server
+      name: logs
+      namespace: canal
+    spec:
+      accessModes:
+      {{- range .Values.canalServer.logs.accessModes }}
+      - {{ . | quote }}
+      {{- end }}
+      storageClassName: {{ .Values.canalServer.logs.storageClass }}
+      resources:
+        requests:
+          storage: {{ .Values.canalServer.logs.storageSize | quote }}
+

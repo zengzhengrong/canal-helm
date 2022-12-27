@@ -1,0 +1,17 @@
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: {{ include "canal-admin.fullname" . }}
+  labels:
+    app: {{ include "canal-admin.name" . }}
+    release: {{ .Release.Name }}
+    heritage: {{ .Release.Service }}
+    chart: {{ include "canal.chart" . }}
+spec:
+  resources:
+    requests:
+      storage: {{ .Values.canalAdmin.logs.storageSize }}
+  volumeMode: {{ .Values.canalAdmin.logs.volumeMode }}
+  storageClassName: {{ .Values.canalAdmin.logs.storageClass }}
+  accessModes:
+    {{ toYaml .Values.canalAdmin.logs.accessModes }}

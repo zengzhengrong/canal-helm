@@ -1,0 +1,172 @@
+# Default values for canal.
+# This is a YAML-formatted file.
+
+imagePullSecrets: []
+nameOverride: ""
+fullnameOverride: ""
+
+# tcp, kafka(todo), rocketMQ
+canalServerMode: tcp
+canalServerModeConfig:
+  rocketmq:
+    ## canal.properties
+    # rocketmq.producer.group = 
+    # rocketmq.enable.message.trace = false
+    # rocketmq.customized.trace.topic =
+    # rocketmq.namespace =
+    # rocketmq.namesrv.addr = 
+    # rocketmq.retry.times.when.send.failed = 1
+    # rocketmq.vip.channel.enabled = true
+    # rocketmq.tag = 
+    producerGroup: canal_group
+    enableMessageTrace: false
+    customizedTraceTopic: 
+    namespace: 
+    namesrvAddr: rocketmq-namesrv-hl.rocketmq:9876
+    retryTimesWhenSendFailed: 1
+    vipChannelEnabled: true
+    tag: canal
+
+defaultSampleCanalInstance:
+  enabled: false
+  canalInstanceMasterAddress: sample-leader.radondb-mysql:3306
+  canalInstanceTsdbEnable: true
+  canalInstanceDBUsername: normal_user
+  canalInstanceDBPassword: RadonDB@123
+  canalInstanceConnectionCharset: UTF-8
+  canalInstanceEnableDruid: false
+  canalInstanceFilterRegex: radondb\\..*
+  canalInstanceFilterBlackRegex: 
+  canalInstanceFilterBlackField: radondb.test_canal:type
+  canalMqTopic: ddl
+  canalMqDynamicTopic: radondb:radondb
+  canalMqPartition: 0
+  canalMqPartitionsNum: 3
+  canalMqPartitionHash: 
+
+
+zookeeper:
+  # enable HA required , would install zookeeper
+  enabled: false
+  extralUrl: # zookeeper.zookeeper
+  replicaCount: 1
+  image:
+    repository: hypertrace/zookeeper
+    tagOverride: latest
+  volume:
+    storageClassName: openebs-hostpath
+    storage: 10Gi
+
+
+canalAdmin:
+  replicaCount: 1
+  image: zengzhengrong889/canal_admin:v1.16_hotfix
+  pullPolicy: IfNotPresent
+  restartOnConfigMapChange: true
+  config:
+    base:
+      ## canal admin application.yml
+      # server:
+      #   port:
+      # spring.datasource:
+      #   address: 
+      #   database:
+      #   username:
+      #   password:
+      # canal:
+      #   adminUser:
+      #   adminPasswd:
+      extralConfigMapRef: 
+      canalAdminUser: admin
+      canalAdminPasswd: admin
+      serverPort: "8089"
+      springDatasourceAddress: sample-leader.radondb-mysql
+      springDatasourceUsername: super_user
+      springDatasourceDatabase: canal_manager
+    initsql:
+      extralConfigMapRef: 
+  secret:
+    extralPasswordSecretRef: 
+    ## plaintext password
+    springDatasourcePassword: RadonDB@123
+  extralEnv: {}
+  resources: 
+    requests:
+      cpu: 500m
+      memory: 1Gi
+    limits:
+      cpu: "1"
+      memory: 1Gi
+  logs:
+    storageClass: openebs-hostpath
+    storageSize: 10Gi
+    volumeMode: Filesystem
+    accessModes:
+      - ReadWriteOnce
+  localtimeHostPath:
+    enabled: true
+  service:
+    type: ClusterIP
+    nodePort: ""
+  ingress:
+    # Default user/password admin:123456 
+    enabled: true
+    className: "nginx"
+    annotations: {}
+      # kubernetes.io/tls-acme: "true"
+    host: canal-admin.localhost
+    tls: []
+    #  - secretName: chart-example-tls
+    #    hosts:
+    #      - chart-example.local
+  nodeSelector: {}
+  tolerations: []
+  affinity: {}
+
+canalServer:
+  # if replicaCount > 1 must be enabled HA
+  replicaCount: 2
+  image: zengzhengrong889/canal_server:v1.16_hotfix
+  pullPolicy: IfNotPresent
+  config:
+    ### canal_local.properties
+    # canal.register.ip = 
+    ## canal admin config
+    # canal.admin.manager = 
+    # canal.admin.port = 
+    # canal.admin.user = 
+    # canal.admin.passwd = 
+    ## admin auto register
+    # canal.admin.register.auto = 
+    # canal.admin.register.cluster = 
+    # canal.admin.register.name = 
+    extralConfigMapRef: 
+    canalRegisterIp: ''
+    canalAdminManager: 'canal-admin'
+    canalAdminPort: '11110'
+    canalAdminUser: 'admin'
+    canalAdminRegisterAuto: 'true'
+    canalAdminRegisterCluster: 'local'
+    canalAdminRegisterName: ''
+  secret:
+    extralPasswordSecretRef: 
+    ## plaintext password
+    canalAdminPasswd: 4ACFE3202A5FF5CF467898FC58AAB1D615029441
+  extralEnv: {}
+  resources:
+    requests:
+      cpu: 100m
+      memory: 512Mi
+    limits:
+      cpu: 500m
+      memory: 2Gi
+  logs:
+    storageClass: openebs-hostpath
+    storageSize: 10Gi
+    volumeMode: Filesystem
+    accessModes:
+      - ReadWriteOnce
+  localtimeHostPath:
+    enabled: true
+  service:
+    type: ClusterIP
