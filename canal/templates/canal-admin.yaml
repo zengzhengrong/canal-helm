@@ -16,8 +16,10 @@ spec:
   replicas: {{ .Values.canalAdmin.replicaCount }}
   template:
     metadata:
+      {{ if .Values.canalAdmin.restartOnConfigMapChange }}
       annotations:
         checksum/config: {{ include (print $.Template.BasePath "/canal-admin-init-sql.yaml") . | sha256sum }}
+      {{ end }}
       labels:
         app: {{ include "canal-admin.name" . }}
         release: {{ .Release.Name }}

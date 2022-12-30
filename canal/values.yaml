@@ -6,29 +6,32 @@ nameOverride: ""
 fullnameOverride: ""
 
 # tcp, kafka(todo), rocketMQ
-canalServerMode: tcp
-canalServerModeConfig:
-  rocketmq:
-    ## canal.properties
-    # rocketmq.producer.group = 
-    # rocketmq.enable.message.trace = false
-    # rocketmq.customized.trace.topic =
-    # rocketmq.namespace =
-    # rocketmq.namesrv.addr = 
-    # rocketmq.retry.times.when.send.failed = 1
-    # rocketmq.vip.channel.enabled = true
-    # rocketmq.tag = 
-    producerGroup: canal_group
-    enableMessageTrace: false
-    customizedTraceTopic: 
-    namespace: 
-    namesrvAddr: rocketmq-namesrv-hl.rocketmq:9876
-    retryTimesWhenSendFailed: 1
-    vipChannelEnabled: true
-    tag: canal
+canalServerMode: 
+  enabled: false
+  mode: tcp
+  config:
+    rocketmq:
+      ## canal.properties
+      # rocketmq.producer.group = 
+      # rocketmq.enable.message.trace = false
+      # rocketmq.customized.trace.topic =
+      # rocketmq.namespace =
+      # rocketmq.namesrv.addr = 
+      # rocketmq.retry.times.when.send.failed = 1
+      # rocketmq.vip.channel.enabled = true
+      # rocketmq.tag = 
+      producerGroup: canal_group
+      enableMessageTrace: false
+      customizedTraceTopic: 
+      namespace: 
+      namesrvAddr: rocketmq-namesrv-hl.rocketmq:9876
+      retryTimesWhenSendFailed: 1
+      vipChannelEnabled: true
+      tag: canal
 
 defaultSampleCanalInstance:
   enabled: false
+  name: radondb
   canalInstanceMasterAddress: sample-leader.radondb-mysql:3306
   canalInstanceTsdbEnable: true
   canalInstanceDBUsername: normal_user
@@ -36,6 +39,7 @@ defaultSampleCanalInstance:
   canalInstanceConnectionCharset: UTF-8
   canalInstanceEnableDruid: false
   canalInstanceFilterRegex: radondb\\..*
+  canalInstanceFilterField: 
   canalInstanceFilterBlackRegex: 
   canalInstanceFilterBlackField: radondb.test_canal:type
   canalMqTopic: ddl
@@ -43,6 +47,7 @@ defaultSampleCanalInstance:
   canalMqPartition: 0
   canalMqPartitionsNum: 3
   canalMqPartitionHash: 
+  canalMqEnableDynamicQueuePartition: true
 
 
 zookeeper:
