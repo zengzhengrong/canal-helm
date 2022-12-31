@@ -42,7 +42,7 @@ defaultSampleCanalInstance:
   canalInstanceFilterField: 
   canalInstanceFilterBlackRegex: 
   canalInstanceFilterBlackField: 
-  canalMqTopic: 
+  canalMqTopic: example
   canalMqDynamicTopic: .*\\..*
   canalMqPartition: 0
   canalMqPartitionsNum: 3
