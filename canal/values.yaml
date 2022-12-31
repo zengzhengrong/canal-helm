@@ -38,12 +38,13 @@ defaultSampleCanalInstance:
   canalInstanceDBPassword: RadonDB@123
   canalInstanceConnectionCharset: UTF-8
   canalInstanceEnableDruid: false
-  canalInstanceFilterRegex: .*\\..*
+  # '\' escape in mysql, so .*\\\\..* = .*\\..*
+  canalInstanceFilterRegex: .*\\\\..* 
   canalInstanceFilterField: 
   canalInstanceFilterBlackRegex: 
   canalInstanceFilterBlackField: 
   canalMqTopic: example
-  canalMqDynamicTopic: .*\\..*
+  canalMqDynamicTopic: .*\\\\..*
   canalMqPartition: 0
   canalMqPartitionsNum: 3
   canalMqPartitionHash: 
