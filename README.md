@@ -16,7 +16,9 @@ helm repo update
 
 #### Single 单节点
 ```
-helm install canal zengzhengrong/canal --namespace canal
+helm install canal zengzhengrong/canal --namespace canal \
+    --set canalAdmin.logs.storageClass=openebs-hostpath \
+    --set canalServer.logs.storageClass=openebs-hostpath 
 ```
 
 #### HA 集群模式
@@ -26,7 +28,8 @@ helm install canal zengzhengrong/canal --namespace canal
 helm install canal zengzhengrong/canal --namespace canal \
     --set canalAdmin.ingress.enabled=true \
     --set canalServerClusterMode.enabled=true \
-    --set zookeeper.enabled=true
+    --set zookeeper.enabled=true \
+    --set zookeeper.volume.storageClassName=openebs-hostpath 
 ```
 
 连接外部zookeeper
