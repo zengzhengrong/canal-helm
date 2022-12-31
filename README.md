@@ -1,7 +1,6 @@
-## Canal
+## Helm chart for canal 
 
-用途是基于 MySQL 数据库增量日志解析，提供增量数据订阅和消费   
-Helm chart for  [alibaba canal](https://github.com/alibaba/canal)  
+[canal](https://github.com/alibaba/canal) 用途是基于 MySQL 数据库增量日志解析，提供增量数据订阅和消费   
 目前基于 release [1.16-hotfix](https://github.com/alibaba/canal/releases/tag/canal-1.1.6-hotfix-1) 编译后的java 字节码 构建镜像 运行时是 alpine + openjdk11  
 支持直接在helm 中配置 server 配置和instance配置(部分)
 
