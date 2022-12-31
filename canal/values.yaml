@@ -6,7 +6,7 @@ nameOverride: ""
 fullnameOverride: ""
 
 # tcp, kafka(todo), rocketMQ
-canalServerMode: 
+canalServerClusterMode: 
   enabled: false
   mode: tcp
   config:
@@ -31,19 +31,19 @@ canalServerMode:
 
 defaultSampleCanalInstance:
   enabled: false
-  name: radondb
+  name: local
   canalInstanceMasterAddress: sample-leader.radondb-mysql:3306
   canalInstanceTsdbEnable: true
   canalInstanceDBUsername: normal_user
   canalInstanceDBPassword: RadonDB@123
   canalInstanceConnectionCharset: UTF-8
   canalInstanceEnableDruid: false
-  canalInstanceFilterRegex: radondb\\..*
+  canalInstanceFilterRegex: .*\\..*
   canalInstanceFilterField: 
   canalInstanceFilterBlackRegex: 
-  canalInstanceFilterBlackField: radondb.test_canal:type
-  canalMqTopic: ddl
-  canalMqDynamicTopic: radondb:radondb
+  canalInstanceFilterBlackField: 
+  canalMqTopic: 
+  canalMqDynamicTopic: .*\\..*
   canalMqPartition: 0
   canalMqPartitionsNum: 3
   canalMqPartitionHash: 
@@ -133,6 +133,7 @@ canalServer:
   replicaCount: 2
   image: zengzhengrong889/canal_server:v1.16_hotfix
   pullPolicy: IfNotPresent
+  restartOnConfigMapChange: true
   config:
     ### canal_local.properties
     # canal.register.ip = 
@@ -151,6 +152,7 @@ canalServer:
     canalAdminPort: '11110'
     canalAdminUser: 'admin'
     canalAdminRegisterAuto: 'true'
+    # canalAdminRegisterCluster work require canalServerClusterMode enabled is true
     canalAdminRegisterCluster: 'local'
     canalAdminRegisterName: ''
   secret:

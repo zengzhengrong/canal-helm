@@ -17,6 +17,11 @@ spec:
   {{- end }}
   template:
     metadata:
+      {{ if .Values.canalServer.restartOnConfigMapChange }}
+      annotations:
+        checksum/config-sql: {{ include (print $.Template.BasePath "/canal-admin-init-sql.yaml") . | sha256sum }}
+        checksum/config: {{ include (print $.Template.BasePath "/canal-server-configmap.yaml") . | sha256sum }}
+      {{ end }}
       labels:
         app: {{ $name }}
     spec:
@@ -27,7 +32,7 @@ spec:
         command: 
           - sh
           - -c
-          - until curl -s -o /dev/null {{ $adminService }}; do echo waiting for canal-admin; sleep 2; done; echo done
+          - sleep 15 ;until curl -s -o /dev/null {{ $adminService }}; do echo waiting for canal-admin; sleep 2; done; echo done
       containers:
       - name: {{ $name }}
         image: {{ .Values.canalServer.image }}
