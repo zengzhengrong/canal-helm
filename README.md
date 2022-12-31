@@ -49,13 +49,13 @@ Ref: [values.yaml](https://github.com/zengzhengrong/canal-helm/blob/main/canal/v
 | `canalAdmin.pullPolicy`                 | IfNotPresent                              | canal admin镜像拉取策略       |
 | `canalAdmin.restartOnConfigMapChange`                 | true                              | 是否当configmap 变更时 canal admin  重启 (仅针对helm生成的configmap)      |
 | `canalAdmin.config.base.extralConfigMapRef`                 | ""                              | 引用外部的configmap的名字，空字符串则使用helm的配置       |
-| `canalAdmin.config.base.canalAdminUser`                 | "admin"                              | canal admin 的 application.yml 配置 参考 https://github.com/alibaba/canal/wiki/Canal-Admin-QuickStart      |
-| `canalAdmin.config.base.canalAdminPasswd`                 | "admin"                              | canal admin 的 application.yml 配置 参考 https://github.com/alibaba/canal/wiki/Canal-Admin-QuickStart       |
-| `canalAdmin.config.base.serverPort`                 | "8089"                              | canal admin 的 application.yml 配置 参考 https://github.com/alibaba/canal/wiki/Canal-Admin-QuickStart       |
-| `canalAdmin.config.base.springDatasourceAddress`                 | "sample-leader.radondb-mysql"                              | canal admin 的 application.yml 配置 参考 https://github.com/alibaba/canal/wiki/Canal-Admin-QuickStart       |
-| `canalAdmin.config.base.springDatasourceUsername`                 | "super_user"                              | canal admin 的 application.yml 配置 参考 https://github.com/alibaba/canal/wiki/Canal-Admin-QuickStart       |
-| `canalAdmin.config.base.springDatasourceDatabase`                 | "canal_manager"                              | canal admin 的 application.yml 配置 参考 https://github.com/alibaba/canal/wiki/Canal-Admin-QuickStart       |
-| `canalAdmin.config.initsql.extralConfigMapRef`                 | ""                              | 引用外部configmap来初始化admin的sql  参考 https://github.com/alibaba/canal/wiki/Canal-Admin-QuickStart  ，空的话则使用内部helm生成的    |
+| `canalAdmin.config.base.canalAdminUser`                 | "admin"                              | canal admin 的 application.yml 配置 [参考](https://github.com/alibaba/canal/wiki/Canal-Admin-QuickStart)       |
+| `canalAdmin.config.base.canalAdminPasswd`                 | "admin"                              | canal admin 的 application.yml 配置 [参考](https://github.com/alibaba/canal/wiki/Canal-Admin-QuickStart)       |
+| `canalAdmin.config.base.serverPort`                 | "8089"                              | canal admin 的 application.yml 配置 [参考](https://github.com/alibaba/canal/wiki/Canal-Admin-QuickStart)       |
+| `canalAdmin.config.base.springDatasourceAddress`                 | "sample-leader.radondb-mysql"                              | canal admin 的 application.yml 配置 [参考](https://github.com/alibaba/canal/wiki/Canal-Admin-QuickStart)       |
+| `canalAdmin.config.base.springDatasourceUsername`                 | "super_user"                              | canal admin 的 application.yml 配置 [参考](https://github.com/alibaba/canal/wiki/Canal-Admin-QuickStart)       |
+| `canalAdmin.config.base.springDatasourceDatabase`                 | "canal_manager"                              | canal admin 的 application.yml 配置 [参考](https://github.com/alibaba/canal/wiki/Canal-Admin-QuickStart)       |
+| `canalAdmin.config.initsql.extralConfigMapRef`                 | ""                              | 引用外部configmap来初始化admin的sql,空的话则使用内部helm生成的    |
 | `canalAdmin.secret.extralPasswordSecretRef`                 | ""                              | 引用外部secret来代替的内置数据库明文密码，空的话会使用下面的明文密码    |
 | `canalAdmin.secret.springDatasourcePassword`                 | "RadonDB@123"                              | admin需要的连接数据库密码    |
 | `canalAdmin.extralEnv`                 | {}                              | key-value 为canal admin 启动时添加额外环境变量    |
