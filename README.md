@@ -4,6 +4,11 @@
 Helm chart for  [alibaba canal](https://github.com/alibaba/canal)  
 目前基于 release [1.16-hotfix](https://github.com/alibaba/canal/releases/tag/canal-1.1.6-hotfix-1) 编译后的java 字节码 构建镜像 运行时是 alpine + openjdk11
 支持直接在helm 中配置 server 配置和instance配置(部分)
+
+### Prerequisites
+Kubernetes 1.20+
+Helm 3.0+
+
 ### Usage
 ```
 helm repo add zengzhengrong https://zengzhengrong.github.io/helm-charts
@@ -133,6 +138,12 @@ Ref: [values.yaml](https://github.com/zengzhengrong/canal-helm/blob/main/canal/v
 | `defaultSampleCanalInstance.canalMqPartitionsNum`                 | 3                           | canal.mq.partitionsNum [配置参考](https://github.com/alibaba/canal/blob/master/admin/admin-web/src/main/resources/instance-template.properties)   |
 | `defaultSampleCanalInstance.canalMqPartitionHash`                 | null                           | canal.mq.partitionHash [配置参考](https://github.com/alibaba/canal/blob/master/admin/admin-web/src/main/resources/instance-template.properties)   |
 | `defaultSampleCanalInstance.canalMqEnableDynamicQueuePartition`                 | true                           | canal.mq.enableDynamicQueuePartition [配置参考](https://github.com/alibaba/canal/blob/master/admin/admin-web/src/main/resources/instance-template.properties)   |
+
+
+## Access canal admin
+
+username: admin
+password: 123456
 
 ## 已知问题
 
