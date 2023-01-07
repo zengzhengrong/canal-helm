@@ -18,14 +18,23 @@ helm repo update
 ```
 helm install canal zengzhengrong/canal --namespace canal \
     --set canalAdmin.logs.storageClass=openebs-hostpath \
-    --set canalServer.logs.storageClass=openebs-hostpath 
+    --set canalServer.logs.storageClass=openebs-hostpath \
+    --set canalAdmin.config.springDatasourceAddress=mysql \
+    --set canalAdmin.config.springDatasourceUsername=root \
+    --set canalAdmin.secret.springDatasourcePassword=root
 ```
+需要设置日志存储类和canal admin 要连接的mysql数据库
 
 #### HA 集群模式
 
 安装内置的zookeeper集群
 ```
 helm install canal zengzhengrong/canal --namespace canal \
+    --set canalAdmin.logs.storageClass=openebs-hostpath \
+    --set canalServer.logs.storageClass=openebs-hostpath \
+    --set canalAdmin.config.springDatasourceAddress=mysql \
+    --set canalAdmin.config.springDatasourceUsername=root \
+    --set canalAdmin.secret.springDatasourcePassword=root \
     --set canalAdmin.ingress.enabled=true \
     --set canalServerClusterMode.enabled=true \
     --set zookeeper.enabled=true \
@@ -36,6 +45,11 @@ helm install canal zengzhengrong/canal --namespace canal \
 
 ```
 helm install canal zengzhengrong/canal --namespace canal \
+    --set canalAdmin.logs.storageClass=openebs-hostpath \
+    --set canalServer.logs.storageClass=openebs-hostpath \
+    --set canalAdmin.config.springDatasourceAddress=mysql \
+    --set canalAdmin.config.springDatasourceUsername=root \
+    --set canalAdmin.secret.springDatasourcePassword=root \
     --set canalAdmin.ingress.enabled=true \
     --set canalServerClusterMode.enabled=true \
     --set zookeeper.extralUrl=zookeeper.zookeeper
