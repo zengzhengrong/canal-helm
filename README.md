@@ -167,3 +167,8 @@ password: 123456
 ```
 connect to ip:canal-server-0.canal-server-headless.canal,port:11110,user:admin,password:******, failed
 ```
+
+## TODO
+
+1. 创建默认测试用例和表
+2. 修复需要手动重启集群
