@@ -1,0 +1,14 @@
+canalAdmin:
+  ingress:
+    enabled: true
+
+canalServerClusterMode:
+  enabled: true
+  mode: 'rocketMQ'
+
+zookeeper:
+  enabled: 'false'
+  extralUrl: 'zookeeper.zookeeper'
+
+defaultSampleCanalInstance:
+  enabled: true
